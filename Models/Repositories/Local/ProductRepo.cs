@@ -14,32 +14,45 @@ namespace AB_Api.Models.Repositories.Local
 
         public void Add(ProductFactory entity)
         {
-            throw new NotImplementedException();
+            products.Add(entity);
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            var product1 = Find(id);
+            products.Remove(product1);
         }
 
         public ProductFactory Find(int id)
         {
-            throw new NotImplementedException();
+            var product1 = products.SingleOrDefault(a => a.Id == id);
+
+            return product1;
         }
 
         public IList<ProductFactory> List()
         {
-            throw new NotImplementedException();
+            return products;
         }
 
         public List<ProductFactory> Search(string term)
         {
-            throw new NotImplementedException();
+            return products.Where(i => i.Code.Contains(term) || i.Title.Contains(term)).ToList();
         }
 
         public void Update(int id, ProductFactory entity)
         {
-            throw new NotImplementedException();
+            var product1 = Find(id);
+            product1.Title = entity.Title;
+            product1.Code = entity.Code;
+
+            product1.CateId = entity.CateId;
+
+            product1.UnitId = entity.UnitId;
+
+           // product1.Title = entity.Title;
+
+
         }
     }
 }

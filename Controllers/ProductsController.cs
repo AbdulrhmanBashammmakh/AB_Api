@@ -1,5 +1,6 @@
 ﻿using AB_Api.Models;
 using AB_Api.Models.FactoryModels;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,12 +9,17 @@ namespace AB_Api.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
+
+
     {
+
+       
         private readonly Ab238_salesContext _context;
         private Product NewProduct = new Product();
         public ProductsController(Ab238_salesContext context)
         {
             _context = context;
+           
         }
 
         // GET: api/Products

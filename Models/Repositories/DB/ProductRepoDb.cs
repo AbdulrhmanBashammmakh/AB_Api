@@ -5,39 +5,79 @@ namespace AB_Api.Models.Repositories.DB
     public class ProductRepoDb : IFactoryRepo<ProductFactory>
     {
 
-        private readonly Ab238_salesContext _context;
+        private readonly Ab238_salesContext DB;
+          public  IList<Product> productsList;
 
-        public ProductRepoDb(Ab238_salesContext context)
+        public ProductRepoDb(Ab238_salesContext context, IList<Product> productsList)
         {
-            _context = context;
+            DB = context;
+            this.productsList = productsList;
         }
 
         public void Add(ProductFactory entity)
         {
-            throw new NotImplementedException();
+            DB.Products.Add(new Product{ Title = entity.Title
+            ,Code=entity.Code
+            ,UnitId=entity.UnitId   
+            ,CateId=entity.CateId
+            ,CrDate=DateTime.Now
+            });
+            DB.SaveChanges();
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            var product1 = Find(id);
+       
+            DB.Products.Remove(product1);
+            DB.SaveChanges();
         }
 
-        public ProductFactory Find(int id)
+        public Product Find(int id)
         {
-            throw new NotImplementedException();
+            var product1 = DB.Products.Find(id);
+            return product1;
         }
 
-        public IList<ProductFactory> List()
+        public IList<Product> List()
         {
-            throw new NotImplementedException();
+            var products = DB.Products.ToList();
+            productsList.Clear();
+            productsList = products;
+            return productsList;
         }
 
-        public List<ProductFactory> Search(string term)
+        public List<Product> Search(string term)
         {
-            throw new NotImplementedException();
+            if (productsList.Equals(null))
+            {
+                List();
+            }
+            return productsList.Where(i => i.Code.Contains(term) || i.Title.Contains(term)).ToList();
+
         }
 
         public void Update(int id, ProductFactory entity)
+        {
+            var product1 = Find(id);
+            product1.Title = entity.Title;
+            product1. Code = entity.Code;
+            product1. UnitId = entity.UnitId;
+            product1. CateId = entity.CateId;
+            DB.SaveChanges();
+        }
+
+        ProductFactory IFactoryRepo<ProductFactory>.Find(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        IList<ProductFactory> IFactoryRepo<ProductFactory>.List()
+        {
+            throw new NotImplementedException();
+        }
+
+        List<ProductFactory> IFactoryRepo<ProductFactory>.Search(string term)
         {
             throw new NotImplementedException();
         }
